@@ -1,17 +1,25 @@
-import * as React from "react"
-import Layout from "../components/layout"
+import React from "react";
 import { Helmet } from "react-helmet";
+import Layout from "../components/layout";
 import { Col, Container, Row } from "react-bootstrap";
+import { getUser } from "../services/auth";
+import { AUTH_TOKEN } from "../constants";
+import { navigate } from "gatsby";
 
-export default function Homepage() {
 
+const Profile = () => {
 
+  const authToken = localStorage.getItem(AUTH_TOKEN);
+
+  if(!authToken) {
+    navigate("/");
+  }
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
         <title>
-          Заявка на склад Суши Хиро
+          Профиль
         </title>
         <link rel="canonical" href="https://sklad2.sushihiro.kz" />
         <link
@@ -23,7 +31,7 @@ export default function Homepage() {
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="/favicon-32x32.png"
+          href="/gatsby-starter-wordpress-homepage/public/favicon-32x32.png"
         />
         <link
           rel="icon"
@@ -36,15 +44,21 @@ export default function Homepage() {
         <meta name="msapplication-TileColor" content="#F5DF4D" />
         <meta name="theme-color" content="#F5DF4D" />
       </Helmet>
-      <Layout >
+      <Layout>
         <Container>
           <Row>
             <Col>
-              <h1>Index page</h1>
+              <h1>Your profile</h1>
+              <ul>
+                <li>Name: {getUser().name}</li>
+                <li>E-mail: {getUser().email}</li>
+              </ul>
             </Col>
           </Row>
         </Container>
       </Layout>
     </>
-  )
-}
+  );
+};
+
+export default Profile;
